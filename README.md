@@ -1,0 +1,2 @@
+# mongodb_aggregation_exercise
+MongoDB Aggregation Exercises
