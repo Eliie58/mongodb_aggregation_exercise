@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--========== BOX ICONS ==========-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+    <!--========== CSS ==========-->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+
+    <style>
+        pre code {
+            display: block;
+            background: none;
+            white-space: pre;
+            -webkit-overflow-scrolling: touch;
+            overflow-x: scroll;
+            max-width: 100%;
+            min-width: 100px;
+            padding: 0;
+        }
+
+        /* For all <code> */
+        code {
+            font-family: MyFancyCustomFont, monospace;
+            font-size: inherit;
+        }
+
+        /* Code in text */
+        p>code,
+        li>code,
+        dd>code,
+        td>code {
+            background: #ffeff0;
+            word-wrap: break-word;
+            box-decoration-break: clone;
+            padding: .1rem .3rem .2rem;
+            border-radius: .2rem;
+        }
+    </style>
+
+    <title>Filtered Top Subset</title>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header__container">
+            <a href="#" class="header__logo">Filtered Top Subset</a>
+        </div>
+    </header>
+
+    <!--========== NAV ==========-->
+    <div class="nav" id="navbar">
+        <nav class="nav__container">
+            <div>
+
+                <div class="nav__list">
+                    <div class="nav__items">
+                        <h3 class="nav__subtitle">Exercises</h3>
+
+                        <div class="nav__dropdown">
+                            <a href="#" class="nav__link">
+                                <i class='bx bx-align-left nav__icon'></i>
+                                <span class="nav__name">Foundational Examples</span>
+                                <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                            </a>
+
+                            <div class="nav__dropdown-collapse">
+                                <div class="nav__dropdown-content">
+                                    <a href="../../exercises/foundational/filtered_top_subset.html"
+                                        class="nav__dropdown-item">Filtered Top Subset</a>
+                                    <a href="../../exercises/foundational/group_total.html"
+                                        class="nav__dropdown-item">Group & Total</a>
+                                    <a href="../../exercises/foundational/unpack_arrays_group.html"
+                                        class="nav__dropdown-item">Unpack Arrays & Group Differently</a>
+                                    <a href="../../exercises/foundational/distict_list.html"
+                                        class="nav__dropdown-item">Distinct List Of Values</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="nav__dropdown">
+                            <a href="#" class="nav__link">
+                                <i class='bx bx-align-left nav__icon'></i>
+                                <span class="nav__name">Joining Data Examples</span>
+                                <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                            </a>
+
+                            <div class="nav__dropdown-collapse">
+                                <div class="nav__dropdown-content">
+                                    <a href="../../exercises/joining/one_to_one.html"
+                                        class="nav__dropdown-item">One-to-One Join</a>
+                                    <a href="../../exercises/joining/multi_field_join.html"
+                                        class="nav__dropdown-item">Multi-Field Join & One-to-Many</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="nav__dropdown">
+                            <a href="#" class="nav__link">
+                                <i class='bx bx-align-left nav__icon'></i>
+                                <span class="nav__name">Data Types Conversion Examples</span>
+                                <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                            </a>
+
+                            <div class="nav__dropdown-collapse">
+                                <div class="nav__dropdown-content">
+                                    <a href="../../exercises/data_type/strongly_typed_conversion.html"
+                                        class="nav__dropdown-item">Strongly-Typed Conversion</a>
+                                    <a href="../../exercises/data_type/convert_incomplete.html"
+                                        class="nav__dropdown-item">Convert Incomplete Date Strings</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!--========== CONTENTS ==========-->
+    <main>
+        <section>
+            <h3>Scenario</h3>
+            <p>You want to query a collection of people to find the three youngest people who have a job in engineering,
+                sorted by the youngest person first.</p>
+            <h3>Setup</h3>
+            <p>Drop any old version of the database (if it exists) and then populate a new <code>persons</code>
+                collection with 6
+                person documents:</p>
+            <pre><code>[
+  {
+    "person_id": "6392529400",
+    "firstname": "Elise",
+    "lastname": "Smith",
+    "dateofbirth": ISODate("1972-01-13T09:32:07Z"),
+    "vocation": "ENGINEER",
+    "address": { 
+        "number": 5625,
+        "street": "Tipa Circle",
+        "city": "Wojzinmoj",
+    },
+  },
+  {
+    "person_id": "1723338115",
+    "firstname": "Olive",
+    "lastname": "Ranieri",
+    "dateofbirth": ISODate("1985-05-12T23:14:30Z"),    
+    "gender": "FEMALE",
+    "vocation": "ENGINEER",
+    "address": {
+        "number": 9303,
+        "street": "Mele Circle",
+        "city": "Tobihbo",
+    },
+  },
+  {
+    "person_id": "8732762874",
+    "firstname": "Toni",
+    "lastname": "Jones",
+    "dateofbirth": ISODate("1991-11-23T16:53:56Z"),    
+    "vocation": "POLITICIAN",
+    "address": {
+        "number": 1,
+        "street": "High Street",
+        "city": "Upper Abbeywoodington",
+    },
+  },
+  {
+    "person_id": "7363629563",
+    "firstname": "Bert",
+    "lastname": "Gooding",
+    "dateofbirth": ISODate("1941-04-07T22:11:52Z"),    
+    "vocation": "FLORIST",
+    "address": {
+        "number": 13,
+        "street": "Upper Bold Road",
+        "city": "Redringtonville",
+    },
+  },
+  {
+    "person_id": "1029648329",
+    "firstname": "Sophie",
+    "lastname": "Celements",
+    "dateofbirth": ISODate("1959-07-06T17:35:45Z"),    
+    "vocation": "ENGINEER",
+    "address": {
+        "number": 5,
+        "street": "Innings Close",
+        "city": "Basilbridge",
+    },
+  },
+  {
+    "person_id": "7363626383",
+    "firstname": "Carl",
+    "lastname": "Simmons",
+    "dateofbirth": ISODate("1998-12-26T13:13:55Z"),    
+    "vocation": "ENGINEER",
+    "address": {
+        "number": 187,
+        "street": "Hillside Road",
+        "city": "Kenningford",
+    },
+  },
+]
+              </code></pre>
+            <h3>Expected Result</h3>
+            <pre>
+                <code>[
+    {
+        person_id: '7363626383',
+        firstname: 'Carl',
+        lastname: 'Simmons',
+        dateofbirth: ISODate('1998-12-26T13:13:55.000Z')
+    },
+    {
+        person_id: '1723338115',
+        firstname: 'Olive',
+        lastname: 'Ranieri',
+        dateofbirth: ISODate('1985-05-12T23:14:30.000Z'),
+        gender: 'FEMALE'
+    },
+    {
+        person_id: '6392529400',
+        firstname: 'Elise',
+        lastname: 'Smith',
+        dateofbirth: ISODate('1972-01-13T09:32:07.000Z')
+    }
+]
+                </code>
+              </pre>
+            <a target=”_blank”
+                href="https://www.practical-mongodb-aggregations.com/examples/foundational/filtered-top-subset.html#aggregation-pipeline">See
+                Result</a>
+        </section>
+    </main>
+
+    <!--========== MAIN JS ==========-->
+    <script src="../../assets/js/main.js"></script>
+</body>
+
+</html>

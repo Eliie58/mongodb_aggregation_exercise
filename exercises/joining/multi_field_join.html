@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--========== BOX ICONS ==========-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+    <!--========== CSS ==========-->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+
+    <style>
+        pre code {
+            display: block;
+            background: none;
+            white-space: pre;
+            -webkit-overflow-scrolling: touch;
+            overflow-x: scroll;
+            max-width: 100%;
+            min-width: 100px;
+            padding: 0;
+        }
+
+        /* For all <code> */
+        code {
+            font-family: MyFancyCustomFont, monospace;
+            font-size: inherit;
+        }
+
+        /* Code in text */
+        p>code,
+        li>code,
+        dd>code,
+        td>code {
+            background: #ffeff0;
+            word-wrap: break-word;
+            box-decoration-break: clone;
+            padding: .1rem .3rem .2rem;
+            border-radius: .2rem;
+        }
+    </style>
+
+    <title>Multi-Field Join & One-to-Many</title>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header__container">
+            <a href="#" class="header__logo">Multi-Field Join & One-to-Many</a>
+        </div>
+    </header>
+
+    <!--========== NAV ==========-->
+    <div class="nav" id="navbar">
+        <nav class="nav__container">
+            <div>
+
+                <div class="nav__list">
+                    <div class="nav__items">
+                        <h3 class="nav__subtitle">Exercises</h3>
+
+                        <div class="nav__dropdown">
+                            <a href="#" class="nav__link">
+                                <i class='bx bx-align-left nav__icon'></i>
+                                <span class="nav__name">Foundational Examples</span>
+                                <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                            </a>
+
+                            <div class="nav__dropdown-collapse">
+                                <div class="nav__dropdown-content">
+                                    <a href="../../exercises/foundational/filtered_top_subset.html"
+                                        class="nav__dropdown-item">Filtered Top Subset</a>
+                                    <a href="../../exercises/foundational/group_total.html"
+                                        class="nav__dropdown-item">Group & Total</a>
+                                    <a href="../../exercises/foundational/unpack_arrays_group.html"
+                                        class="nav__dropdown-item">Unpack Arrays & Group Differently</a>
+                                    <a href="../../exercises/foundational/distict_list.html"
+                                        class="nav__dropdown-item">Distinct List Of Values</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="nav__dropdown">
+                            <a href="#" class="nav__link">
+                                <i class='bx bx-align-left nav__icon'></i>
+                                <span class="nav__name">Joining Data Examples</span>
+                                <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                            </a>
+
+                            <div class="nav__dropdown-collapse">
+                                <div class="nav__dropdown-content">
+                                    <a href="../../exercises/joining/one_to_one.html"
+                                        class="nav__dropdown-item">One-to-One Join</a>
+                                    <a href="../../exercises/joining/multi_field_join.html"
+                                        class="nav__dropdown-item">Multi-Field Join & One-to-Many</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="nav__dropdown">
+                            <a href="#" class="nav__link">
+                                <i class='bx bx-align-left nav__icon'></i>
+                                <span class="nav__name">Data Types Conversion Examples</span>
+                                <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                            </a>
+
+                            <div class="nav__dropdown-collapse">
+                                <div class="nav__dropdown-content">
+                                    <a href="../../exercises/data_type/strongly_typed_conversion.html"
+                                        class="nav__dropdown-item">Strongly-Typed Conversion</a>
+                                    <a href="../../exercises/data_type/convert_incomplete.html"
+                                        class="nav__dropdown-item">Convert Incomplete Date Strings</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!--========== CONTENTS ==========-->
+    <main>
+        <section>
+            <h3>Scenario</h3>
+            <p>You want to generate a report to list all the orders made for each product in 2020. To achieve this, you
+                need to take a shop's products collection and join each product record to all its orders stored in an
+                orders collection. There is a 1:many relationship between both collections, based on a match of two
+                fields on each side. Rather than joining on a single field like <code>product_id</code> (which doesn't
+                exist in this
+                data set), you need to use two common fields to join (<code>product_name</code> and
+                <code>product_variation</code>).
+            </p>
+            <h3>Setup</h3>
+            <p>Drop any old version of the database (if it exists) and then populate new
+            <pre>products</pre> and <code>orders</code> collections
+            with documents spanning 2019-2021 (the database commands have been split in two to enable your clipboard
+            to hold all the text - ensure you copy and execute each of the two sections)</p>
+            <p>Insert into <code>products</code></p>
+            <pre>
+                <code>[
+    {
+        "name": "Asus Laptop",
+        "variation": "Ultra HD",
+        "category": "ELECTRONICS",
+        "description": "Great for watching movies",
+    },
+    {
+        "name": "Asus Laptop",
+        "variation": "Normal Display",
+        "category": "ELECTRONICS",
+        "description": "Good value laptop for students",
+    },
+    {
+        "name": "The Day Of The Triffids",
+        "variation": "1st Edition",
+        "category": "BOOKS",
+        "description": "Classic post-apocalyptic novel",
+    },
+    {
+        "name": "The Day Of The Triffids",
+        "variation": "2nd Edition",
+        "category": "BOOKS",
+        "description": "Classic post-apocalyptic novel",
+    },
+    {
+        "name": "Morphy Richards Food Mixer",
+        "variation": "Deluxe",
+        "category": "KITCHENWARE",
+        "description": "Luxury mixer turning good cakes into great",
+    },
+    {
+        "name": "Karcher Hose Set",
+        "variation": "Full Monty",
+        "category": "GARDEN",
+        "description": "Hose + nosels + winder for tidy storage",
+    },
+]
+                </code>
+            </pre>
+            <p>Insert into <code>orders</code></p>
+            <pre>
+            <code>[
+    {
+        "customer_id": "elise_smith@myemail.com",
+        "orderdate": ISODate("2020-05-30T08:35:52Z"),
+        "product_name": "Asus Laptop",
+        "product_variation": "Normal Display",
+        "value": NumberDecimal("431.43"),
+    },
+    {
+        "customer_id": "tj@wheresmyemail.com",
+        "orderdate": ISODate("2019-05-28T19:13:32Z"),
+        "product_name": "The Day Of The Triffids",
+        "product_variation": "2nd Edition",
+        "value": NumberDecimal("5.01"),
+    },  
+    {
+        "customer_id": "oranieri@warmmail.com",
+        "orderdate": ISODate("2020-01-01T08:25:37Z"),
+        "product_name": "Morphy Richards Food Mixer",
+        "product_variation": "Deluxe",
+        "value": NumberDecimal("63.13"),
+    },
+    {
+        "customer_id": "jjones@tepidmail.com",
+        "orderdate": ISODate("2020-12-26T08:55:46Z"),
+        "product_name": "Asus Laptop",
+        "product_variation": "Normal Display",
+        "value": NumberDecimal("429.65"),
+    },
+]
+            </code>
+        </pre>
+            <h3>Expected Result</h3>
+            <pre>
+                <code>[
+    {
+        name: 'Asus Laptop',
+        variation: 'Normal Display',
+        category: 'ELECTRONICS',
+        description: 'Good value laptop for students',
+        orders: [
+        {
+            customer_id: 'elise_smith@myemail.com',
+            orderdate: ISODate('2020-05-30T08:35:52.000Z'),
+            value: NumberDecimal('431.43')
+        },
+        {
+            customer_id: 'jjones@tepidmail.com',
+            orderdate: ISODate('2020-12-26T08:55:46.000Z'),
+            value: NumberDecimal('429.65')
+        }
+        ]
+    },
+    {
+        name: 'Morphy Richards Food Mixer',
+        variation: 'Deluxe',
+        category: 'KITCHENWARE',
+        description: 'Luxury mixer turning good cakes into great',
+        orders: [
+        {
+            customer_id: 'oranieri@warmmail.com',
+            orderdate: ISODate('2020-01-01T08:25:37.000Z'),
+            value: NumberDecimal('63.13')
+        }
+        ]
+    }
+]
+                </code>
+              </pre>
+            <a target=”_blank”
+                href="https://www.practical-mongodb-aggregations.com/examples/joining/multi-one-to-many.html#aggregation-pipeline">See
+                Result</a>
+        </section>
+    </main>
+
+    <!--========== MAIN JS ==========-->
+    <script src="../../assets/js/main.js"></script>
+</body>
+
+</html>

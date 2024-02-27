@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--========== BOX ICONS ==========-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+    <!--========== CSS ==========-->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+
+    <style>
+        pre code {
+            display: block;
+            background: none;
+            white-space: pre;
+            -webkit-overflow-scrolling: touch;
+            overflow-x: scroll;
+            max-width: 100%;
+            min-width: 100px;
+            padding: 0;
+        }
+
+        /* For all <code> */
+        code {
+            font-family: MyFancyCustomFont, monospace;
+            font-size: inherit;
+        }
+
+        /* Code in text */
+        p>code,
+        li>code,
+        dd>code,
+        td>code {
+            background: #ffeff0;
+            word-wrap: break-word;
+            box-decoration-break: clone;
+            padding: .1rem .3rem .2rem;
+            border-radius: .2rem;
+        }
+    </style>
+
+    <title>Unpack Arrays & Group Differently</title>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header__container">
+            <a href="#" class="header__logo">Unpack Arrays & Group Differently</a>
+        </div>
+    </header>
+
+    <!--========== NAV ==========-->
+    <div class="nav" id="navbar">
+        <nav class="nav__container">
+            <div>
+
+                <div class="nav__list">
+                    <div class="nav__items">
+                        <h3 class="nav__subtitle">Exercises</h3>
+
+                        <div class="nav__dropdown">
+                            <a href="#" class="nav__link">
+                                <i class='bx bx-align-left nav__icon'></i>
+                                <span class="nav__name">Foundational Examples</span>
+                                <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                            </a>
+
+                            <div class="nav__dropdown-collapse">
+                                <div class="nav__dropdown-content">
+                                    <a href="../../exercises/foundational/filtered_top_subset.html"
+                                        class="nav__dropdown-item">Filtered Top Subset</a>
+                                    <a href="../../exercises/foundational/group_total.html"
+                                        class="nav__dropdown-item">Group & Total</a>
+                                    <a href="../../exercises/foundational/unpack_arrays_group.html"
+                                        class="nav__dropdown-item">Unpack Arrays & Group Differently</a>
+                                    <a href="../../exercises/foundational/distict_list.html"
+                                        class="nav__dropdown-item">Distinct List Of Values</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="nav__dropdown">
+                            <a href="#" class="nav__link">
+                                <i class='bx bx-align-left nav__icon'></i>
+                                <span class="nav__name">Joining Data Examples</span>
+                                <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                            </a>
+
+                            <div class="nav__dropdown-collapse">
+                                <div class="nav__dropdown-content">
+                                    <a href="../../exercises/joining/one_to_one.html"
+                                        class="nav__dropdown-item">One-to-One Join</a>
+                                    <a href="../../exercises/joining/multi_field_join.html"
+                                        class="nav__dropdown-item">Multi-Field Join & One-to-Many</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="nav__dropdown">
+                            <a href="#" class="nav__link">
+                                <i class='bx bx-align-left nav__icon'></i>
+                                <span class="nav__name">Data Types Conversion Examples</span>
+                                <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                            </a>
+
+                            <div class="nav__dropdown-collapse">
+                                <div class="nav__dropdown-content">
+                                    <a href="../../exercises/data_type/strongly_typed_conversion.html"
+                                        class="nav__dropdown-item">Strongly-Typed Conversion</a>
+                                    <a href="../../exercises/data_type/convert_incomplete.html"
+                                        class="nav__dropdown-item">Convert Incomplete Date Strings</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!--========== CONTENTS ==========-->
+    <main>
+        <section>
+            <h3>Scenario</h3>
+            <p>You want to generate a retail report to list the total value and quantity of expensive products sold
+                (valued over 15 dollars). The source data is a list of shop orders, where each order contains the set of
+                products purchased as part of the order.
+            </p>
+            <h3>Setup</h3>
+            <p>Drop any old version of the database (if it exists) and then populate a new <code>orders</code>
+                collection where each
+                document contains an array of products purchased:</p>
+            <pre>
+                <code>[
+    {
+        "order_id": 6363763262239,
+        "products": [
+        {
+            "prod_id": "abc12345",
+            "name": "Asus Laptop",
+            "price": NumberDecimal("431.43"),
+        },
+        {
+            "prod_id": "def45678",
+            "name": "Karcher Hose Set",
+            "price": NumberDecimal("22.13"),
+        },
+        ],
+    },
+    {
+        "order_id": 1197372932325,
+        "products": [
+        {
+            "prod_id": "abc12345",
+            "name": "Asus Laptop",
+            "price": NumberDecimal("429.99"),
+        },
+        ],
+    },
+    {
+        "order_id": 9812343774839,
+        "products": [
+        {
+            "prod_id": "pqr88223",
+            "name": "Morphy Richardds Food Mixer",
+            "price": NumberDecimal("431.43"),
+        },
+        {
+            "prod_id": "def45678",
+            "name": "Karcher Hose Set",
+            "price": NumberDecimal("21.78"),
+        },
+        ],
+    },
+    {
+        "order_id": 4433997244387,
+        "products": [
+        {
+            "prod_id": "def45678",
+            "name": "Karcher Hose Set",
+            "price": NumberDecimal("23.43"),
+        },
+        {
+            "prod_id": "jkl77336",
+            "name": "Picky Pencil Sharpener",
+            "price": NumberDecimal("0.67"),
+        },
+        {
+            "prod_id": "xyz11228",
+            "name": "Russell Hobbs Chrome Kettle",
+            "price": NumberDecimal("15.76"),
+        },
+        ],
+    },
+]
+                </code>
+            </pre>
+            <h3>Expected Result</h3>
+            <pre>
+                <code>[
+    {
+        product_id: 'pqr88223',
+        product: 'Morphy Richardds Food Mixer',
+        total_value: NumberDecimal('431.43'),
+        quantity: 1
+    },
+    {
+        product_id: 'abc12345',
+        product: 'Asus Laptop',
+        total_value: NumberDecimal('861.42'),
+        quantity: 2
+    },
+    {
+        product_id: 'def45678',
+        product: 'Karcher Hose Set',
+        total_value: NumberDecimal('67.34'),
+        quantity: 3
+    },
+    {
+        product_id: 'xyz11228',
+        product: 'Russell Hobbs Chrome Kettle',
+        total_value: NumberDecimal('15.76'),
+        quantity: 1
+    }
+]
+                </code>
+              </pre>
+            <a target=”_blank”
+                href="https://www.practical-mongodb-aggregations.com/examples/foundational/unpack-array-group-differently.html#aggregation-pipeline">See
+                Result</a>
+        </section>
+    </main>
+
+    <!--========== MAIN JS ==========-->
+    <script src="../../assets/js/main.js"></script>
+</body>
+
+</html>

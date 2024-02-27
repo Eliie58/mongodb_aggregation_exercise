@@ -1,2 +1,3 @@
-# mongodb_aggregation_exercise
-MongoDB Aggregation Exercises
+# MongoDB Aggregation Exercises
+
+Sourced from [Practical MongoDB Aggregations Book](https://www.practical-mongodb-aggregations.com)
